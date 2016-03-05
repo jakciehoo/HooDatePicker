@@ -63,4 +63,8 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 - (void)dismiss;
 
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;
+
+- (void)setTintColor:(UIColor *)tintColor;
+
+- (void)setHighlightColor:(UIColor *)highlightColor;
 @end

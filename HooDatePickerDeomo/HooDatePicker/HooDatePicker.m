@@ -119,6 +119,12 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 @property (nonatomic, strong) UILabel *titleLabel;
 
+@property (nonatomic, strong) UIView *headerView;
+
+@property (nonatomic, strong) UIColor *tintColor;
+
+@property (nonatomic, strong) UIColor *highlightColor;
+
 // Data of years, months, days, dates, hours, minutes, seconds
 @property (nonatomic, strong) NSMutableArray *years;
 @property (nonatomic, strong) NSMutableArray *months;
@@ -127,8 +133,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 @property (nonatomic, strong) NSMutableArray *hours;
 @property (nonatomic, strong) NSMutableArray *minutes;
 @property (nonatomic, strong) NSMutableArray *seconds;
-
-@property (nonatomic, strong) UIToolbar *headerToolBar;
 
 // ScrollView for Years, Months, days ,Dates ,Hours ,Minute ,Seconds
 @property (nonatomic, strong) UIScrollView *scrollViewYears;
@@ -151,7 +155,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     if(!_dimBackgroundView) {
         _dimBackgroundView = [[UIView alloc] initWithFrame:self.superView.bounds];
-        _dimBackgroundView.autoresizingMask = [self allAutoresizingMasksFlags];
         [_dimBackgroundView setTranslatesAutoresizingMaskIntoConstraints:YES];
         _dimBackgroundView.backgroundColor = [UIColor clearColor];
         
@@ -161,12 +164,63 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     return _dimBackgroundView;
 }
 
+- (UIView *)headerView {
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, kHooDatePickerHeaderHeight)];
+        // Button Cancel
+        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
+        [cancelButton setTitle:kCancelButtonItemTitle forState:UIControlStateNormal];
+        [cancelButton setTitleColor:self.tintColor forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(actionButtonCancel:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView addSubview:cancelButton];
+        
+        // Button confirm
+        UIButton *sureButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - kHooDatePickerButtonHeaderWidth - kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
+        [sureButton setTitle:kSureButtonItemTitle forState:UIControlStateNormal];
+        [sureButton setTitleColor:self.highlightColor forState:UIControlStateNormal];
+        [sureButton addTarget:self action:@selector(actionButtonValid:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView addSubview:sureButton];
+        
+        // Label Title
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancelButton.frame) + kHooDatePickerPadding, 0.0, self.frame.size.width - ((kHooDatePickerButtonHeaderWidth + kHooDatePickerPadding * 2) * 2 ), kHooDatePickerHeaderHeight)];
+        _titleLabel.text = self.title;
+        _titleLabel.font = kHooDatePickerTitleFont;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.textColor = self.tintColor;
+        [_headerView addSubview:_titleLabel];
+    }
+    return _headerView;
+}
+
 - (NSDateFormatter *)dateFormatter {
     if (!_dateFormatter) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         _dateFormatter = dateFormatter;
     }
     return _dateFormatter;
+}
+
+- (void)setTintColor:(UIColor *)tintColor {
+    _tintColor = tintColor;
+    [self setupControl];
+}
+
+- (void)setHighlightColor:(UIColor *)highlightColor {
+    _highlightColor = highlightColor;
+    [self setupControl];
+}
+
+- (void)setMinimumDate:(NSDate*)date {
+    _minimumDate = date;
+    NSDateComponents* componentsMin = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:_minimumDate];
+    NSInteger yearMin = [componentsMin year];
+    _minYear = yearMin;
+    [self setupControl];
+}
+
+- (void)setMaximumDate:(NSDate*)date {
+    _maximumDate = date;
+    [self setupControl];
 }
 
 #pragma mark - Initializers
@@ -178,8 +232,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     if ([self initWithFrame:CGRectMake(0.0, _superView.frame.size.height, _superView.frame.size.width, kHooDatePickerHeight)]) {
         _datePickerMode = HooDatePickerModeDate;
         [_superView addSubview:self];
-        [self setupControl];
         _minYear = 1900;
+        self.tintColor = kHooDatePickerTintColor;
+        self.highlightColor = kHooDatePickerHighlightColor;
+        [self addSubview:self.headerView];
+        [self setupControl];
     }
     return self;
 }
@@ -213,9 +270,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     // Background :
     self.backgroundColor = kHooDatePickerBackgroundColor;
-    
-    // Header DatePicker :
-    [self buildHeader];
     
     // Date Selectors :
     if (self.datePickerMode == HooDatePickerModeDate) {
@@ -251,31 +305,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self setDate:[NSDate date] animated:NO];
 }
 
-#pragma mark - Build Header View
-
-- (void)buildHeader {
-    // Button Cancel
-    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
-    [cancelButton setTitle:kCancelButtonItemTitle forState:UIControlStateNormal];
-    [cancelButton setTitleColor:kHooDatePickerTintColor forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(actionButtonCancel:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:cancelButton];
-    
-    // Button confirm
-    UIButton *sureButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - kHooDatePickerButtonHeaderWidth - kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
-    [sureButton setTitle:kSureButtonItemTitle forState:UIControlStateNormal];
-    [sureButton setTitleColor:kHooDatePickerHighlightColor forState:UIControlStateNormal];
-    [sureButton addTarget:self action:@selector(actionButtonValid:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:sureButton];
-    
-    // Label Title
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancelButton.frame) + kHooDatePickerPadding, 0.0, self.frame.size.width - ((kHooDatePickerButtonHeaderWidth + kHooDatePickerPadding * 2) * 2 ), kHooDatePickerHeaderHeight)];
-    _titleLabel.text = self.title;
-    _titleLabel.font = kHooDatePickerTitleFont;
-    _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.textColor = kHooDatePickerTitleFontColor;
-    [self addSubview:_titleLabel];
-}
 
 #pragma mark - Build Selector Days
 
@@ -291,11 +320,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewDays];
     
     _lineDaysTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewDays.frame.origin.x + kHooDatePickerLineMargin, _scrollViewDays.frame.origin.y + (_scrollViewDays.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineDaysTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineDaysTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineDaysTop];
     
     _lineDaysBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewDays.frame.origin.x + kHooDatePickerLineMargin, _scrollViewDays.frame.origin.y + (_scrollViewDays.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineDaysBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineDaysBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineDaysBottom];
     
     // Update ScrollView Data
@@ -311,7 +340,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     CGFloat offsetContentScrollView = (_scrollViewYears.frame.size.height - kHooDatePickerScrollViewItemHeight) / 2.0;
     
-    if (_labelsDays != nil && _labelsDays.count > 0) {
+    if (_labelsDays && _labelsDays.count > 0) {
         for (UILabel *label in _labelsDays) {
             [label removeFromSuperview];
         }
@@ -327,7 +356,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelDay.text = day;
         labelDay.font = kHooDatePickerLabelFont;
         labelDay.textAlignment = NSTextAlignmentCenter;
-        labelDay.textColor = kHooDatePickerFontColorLabel;
+        labelDay.textColor = self.tintColor;
         labelDay.backgroundColor = [UIColor clearColor];
         
         [_labelsDays addObject:labelDay];
@@ -339,15 +368,15 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 - (void)removeSelectorDays {
     
-    if (_scrollViewDays != nil) {
+    if (_scrollViewDays) {
         [_scrollViewDays removeFromSuperview];
         _scrollViewDays = nil;
     }
-    if (_lineDaysTop != nil) {
+    if (_lineDaysTop) {
         [_lineDaysTop removeFromSuperview];
         _lineDaysTop = nil;
     }
-    if (_lineDaysBottom != nil) {
+    if (_lineDaysBottom) {
         [_lineDaysBottom removeFromSuperview];
         _lineDaysBottom = nil;
     }
@@ -368,11 +397,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewMonths];
     
     _lineMonthsTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewMonths.frame.origin.x + kHooDatePickerLineMargin, _scrollViewMonths.frame.origin.y + (_scrollViewMonths.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineMonthsTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineMonthsTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineMonthsTop];
     
     _lineDaysBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewMonths.frame.origin.x + kHooDatePickerLineMargin, _scrollViewMonths.frame.origin.y + (_scrollViewMonths.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineDaysBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineDaysBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineDaysBottom];
     
     
@@ -389,7 +418,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     CGFloat offsetContentScrollView = (_scrollViewYears.frame.size.height - kHooDatePickerScrollViewItemHeight) / 2.0;
     
-    if (_labelsMonths != nil && _labelsMonths.count > 0) {
+    if (_labelsMonths && _labelsMonths.count > 0) {
         for (UILabel *label in _labelsMonths) {
             [label removeFromSuperview];
         }
@@ -405,7 +434,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelDay.text = day;
         labelDay.font = kHooDatePickerLabelFont;
         labelDay.textAlignment = NSTextAlignmentCenter;
-        labelDay.textColor = kHooDatePickerFontColorLabel;
+        labelDay.textColor = self.tintColor;
         labelDay.backgroundColor = [UIColor clearColor];
         
         [_labelsMonths addObject:labelDay];
@@ -417,15 +446,15 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 - (void)removeSelectorMonths {
     
-    if (_scrollViewMonths != nil) {
+    if (_scrollViewMonths) {
         [_scrollViewMonths removeFromSuperview];
         _scrollViewMonths = nil;
     }
-    if (_lineMonthsTop != nil) {
+    if (_lineMonthsTop) {
         [_lineMonthsTop removeFromSuperview];
         _lineMonthsTop = nil;
     }
-    if (_lineMonthsBottom != nil) {
+    if (_lineMonthsBottom) {
         [_lineMonthsBottom removeFromSuperview];
         _lineMonthsBottom = nil;
     }
@@ -446,11 +475,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewYears];
     
     _lineYearsTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewYears.frame.origin.x + kHooDatePickerLineMargin, _scrollViewYears.frame.origin.y + (_scrollViewYears.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineYearsTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineYearsTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineYearsTop];
     
     _lineYearsBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewYears.frame.origin.x + kHooDatePickerLineMargin, _scrollViewYears.frame.origin.y + (_scrollViewYears.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineYearsBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineYearsBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineYearsBottom];
     
     // Update ScrollView Data
@@ -482,7 +511,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelDay.text = day;
         labelDay.font = kHooDatePickerLabelFont;
         labelDay.textAlignment = NSTextAlignmentCenter;
-        labelDay.textColor = kHooDatePickerFontColorLabel;
+        labelDay.textColor = self.tintColor;
         labelDay.backgroundColor = [UIColor clearColor];
         
         [_labelsYears addObject:labelDay];
@@ -494,15 +523,15 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 - (void)removeSelectorYears {
     
-    if (_scrollViewYears != nil) {
+    if (_scrollViewYears) {
         [_scrollViewYears removeFromSuperview];
         _scrollViewYears = nil;
     }
-    if (_lineYearsTop != nil) {
+    if (_lineYearsTop) {
         [_lineYearsTop removeFromSuperview];
         _lineYearsTop = nil;
     }
-    if (_lineYearsBottom != nil) {
+    if (_lineYearsBottom) {
         [_lineYearsBottom removeFromSuperview];
         _lineYearsBottom = nil;
     }
@@ -522,11 +551,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewDates];
     
     _lineDatesTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewDates.frame.origin.x + kHooDatePickerLineMargin, _scrollViewDates.frame.origin.y + (_scrollViewDates.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineDatesTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineDatesTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineDatesTop];
     
     _lineDatesBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewDates.frame.origin.x + kHooDatePickerLineMargin, _scrollViewDates.frame.origin.y + (_scrollViewDates.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineDatesBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineDatesBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineDatesBottom];
     
     // Update ScrollView Data
@@ -542,7 +571,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     CGFloat offsetContentScrollView = (_scrollViewDates.frame.size.height - kHooDatePickerScrollViewItemHeight) / 2.0;
     
-    if (_labelsDates != nil && _labelsDates.count > 0) {
+    if (_labelsDates && _labelsDates.count > 0) {
         for (UILabel *label in _labelsDates) {
             [label removeFromSuperview];
         }
@@ -565,7 +594,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelDate.text = hour;
         labelDate.font = kHooDatePickerLabelFont;
         labelDate.textAlignment = NSTextAlignmentCenter;
-        labelDate.textColor = kHooDatePickerFontColorLabel;
+        labelDate.textColor = self.tintColor;
         labelDate.backgroundColor = [UIColor clearColor];
         
         [_labelsDates addObject:labelDate];
@@ -605,11 +634,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewHours];
     
     _lineHoursTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewHours.frame.origin.x + kHooDatePickerLineMargin, _scrollViewHours.frame.origin.y + (_scrollViewHours.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineHoursTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineHoursTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineHoursTop];
     
     _lineHoursBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewHours.frame.origin.x + kHooDatePickerLineMargin, _scrollViewHours.frame.origin.y + (_scrollViewHours.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineHoursBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineHoursBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineHoursBottom];
     
     // Update ScrollView Data
@@ -641,7 +670,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelHour.text = hour;
         labelHour.font = kHooDatePickerLabelFont;
         labelHour.textAlignment = NSTextAlignmentCenter;
-        labelHour.textColor = kHooDatePickerFontColorLabel;
+        labelHour.textColor = self.tintColor;
         labelHour.backgroundColor = [UIColor clearColor];
         
         [_labelsHours addObject:labelHour];
@@ -681,11 +710,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewMinutes];
     
     _lineMinutesTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewMinutes.frame.origin.x + kHooDatePickerLineMargin, _scrollViewMinutes.frame.origin.y + (_scrollViewMinutes.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineMinutesTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineMinutesTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineMinutesTop];
     
     _lineMinutesBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewMinutes.frame.origin.x + kHooDatePickerLineMargin, _scrollViewMinutes.frame.origin.y + (_scrollViewMinutes.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineMinutesBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineMinutesBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineMinutesBottom];
     
     // Update ScrollView Data
@@ -717,7 +746,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelMinute.text = minute;
         labelMinute.font = kHooDatePickerLabelFont;
         labelMinute.textAlignment = NSTextAlignmentCenter;
-        labelMinute.textColor = kHooDatePickerFontColorLabel;
+        labelMinute.textColor = self.tintColor;
         labelMinute.backgroundColor = [UIColor clearColor];
         
         [_labelsMinutes addObject:labelMinute];
@@ -757,11 +786,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self addSubview:_scrollViewSeconds];
     
     _lineSecondsTop = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewSeconds.frame.origin.x + kHooDatePickerLineMargin, _scrollViewSeconds.frame.origin.y + (_scrollViewSeconds.frame.size.height / 2) - (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineSecondsTop.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineSecondsTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineSecondsTop];
     
     _lineSecondsBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewSeconds.frame.origin.x + kHooDatePickerLineMargin, _scrollViewSeconds.frame.origin.y + (_scrollViewSeconds.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineSecondsBottom.backgroundColor = kHooDatePickerBackgroundColorLines;
+    _lineSecondsBottom.backgroundColor = self.highlightColor;
     [self addSubview:_lineSecondsBottom];
     
     // Update ScrollView Data
@@ -793,7 +822,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         labelSecond.text = second;
         labelSecond.font = kHooDatePickerLabelFont;
         labelSecond.textAlignment = NSTextAlignmentCenter;
-        labelSecond.textColor = kHooDatePickerFontColorLabel;
+        labelSecond.textColor = self.tintColor;
         labelSecond.backgroundColor = [UIColor clearColor];
         
         [_labelsSeconds addObject:labelSecond];
@@ -905,21 +934,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 - (void)setDatePickerMode:(HooDatePickerMode)mode {
     _datePickerMode = mode;
-    [self setupControl];
-}
-
-#pragma mark - DatePicker Date Maximum And Minimum
-
-- (void)setMinimumDate:(NSDate*)date {
-    _minimumDate = date;
-    NSDateComponents* componentsMin = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:_minimumDate];
-    NSInteger yearMin = [componentsMin year];
-    _minYear = yearMin;
-    [self setupControl];
-}
-
-- (void)setMaximumDate:(NSDate*)date {
-    _maximumDate = date;
     [self setupControl];
 }
 
@@ -1309,22 +1323,21 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     // Updates days :
     NSDate *date = [self convertToDateDay:1 month:_selectedMonth year:_selectedYear hours:_selectedHour minutes:_selectedMinute seconds:_selectedSecond];
     
-    if (date != nil) {
+    if (!date) return;
         
-        NSMutableArray *newDays = [self getDaysInMonth:date];
+    NSMutableArray *newDays = [self getDaysInMonth:date];
+    
+    if (newDays.count != _days.count) {
         
-        if (newDays.count != _days.count) {
-            
-            _days = newDays;
-            
-            [self buildSelectorLabelsDays];
-            
-            if (_selectedDay > _days.count) {
-                _selectedDay = _days.count;
-            }
-            
-            [self highlightLabelInArray:_labelsDays atIndex:_selectedDay - 1];
+        _days = newDays;
+        
+        [self buildSelectorLabelsDays];
+        
+        if (_selectedDay > _days.count) {
+            _selectedDay = _days.count;
         }
+        
+        [self highlightLabelInArray:_labelsDays atIndex:_selectedDay - 1];
     }
 }
 
@@ -1339,50 +1352,45 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 - (void)setScrollView:(UIScrollView*)scrollView atIndex:(NSInteger)index animated:(BOOL)animated {
     
-    if (scrollView != nil) {
+    if (!scrollView) return;
         
-        if (animated) {
-            [UIView beginAnimations:@"ScrollViewAnimation" context:nil];
-            [UIView setAnimationDelegate:self];
-            [UIView setAnimationDuration:kHooDatePickerAnimationDuration];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        }
-        
-        scrollView.contentOffset = CGPointMake(0.0, (index * kHooDatePickerScrollViewItemHeight));
-        
-        if (animated) {
-            [UIView commitAnimations];
-        }
-        
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
-            [self.delegate datePicker:self dateDidChange:[self getDate]];
-        }
+    if (animated) {
+        [UIView beginAnimations:@"ScrollViewAnimation" context:nil];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:kHooDatePickerAnimationDuration];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    }
+    
+    scrollView.contentOffset = CGPointMake(0.0, (index * kHooDatePickerScrollViewItemHeight));
+    
+    if (animated) {
+        [UIView commitAnimations];
+    }
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
+        [self.delegate datePicker:self dateDidChange:[self getDate]];
     }
 }
 
 - (void)highlightLabelInArray:(NSMutableArray*)labels atIndex:(NSInteger)index {
-    if (index > labels.count) {
-        return;
+    if (!labels) return;
+    if (index > labels.count) return;
+    if ((index - 1) >= 0) {
+        UILabel *label = (UILabel*)[labels objectAtIndex:(index - 1)];
+        label.textColor = self.tintColor;
+        label.font = kHooDatePickerLabelFont;
     }
-    if (labels) {
-        
-        if ((index - 1) >= 0) {
-            UILabel *label = (UILabel*)[labels objectAtIndex:(index - 1)];
-            label.textColor = kHooDatePickerFontColorLabel;
-            label.font = kHooDatePickerLabelFont;
-        }
-        
-        if (index >= 0 && index < labels.count) {
-            UILabel *label = (UILabel*)[labels objectAtIndex:index];
-            label.textColor = kHooDatePickerFontColorLabelSelected;
-            label.font = kHooDatePickerLabelSelectedFont;
-        }
-        
-        if ((index + 1) < labels.count) {
-            UILabel *label = (UILabel*)[labels objectAtIndex:(index + 1)];
-            label.textColor = kHooDatePickerFontColorLabel;
-            label.font = kHooDatePickerLabelFont;
-        }
+    
+    if (index >= 0 && index < labels.count) {
+        UILabel *label = (UILabel*)[labels objectAtIndex:index];
+        label.textColor = self.highlightColor;
+        label.font = kHooDatePickerLabelSelectedFont;
+    }
+    
+    if ((index + 1) < labels.count) {
+        UILabel *label = (UILabel*)[labels objectAtIndex:(index + 1)];
+        label.textColor = self.tintColor;
+        label.font = kHooDatePickerLabelFont;
     }
 }
 
@@ -1390,36 +1398,35 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 - (void)setDate:(NSDate *)date animated:(BOOL)animated {
     
-    if (date) {
-        NSDateComponents* components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:date];
-        
-        _selectedDay = [components day];
-        _selectedMonth = [components month];
-        _selectedYear = [components year];
-        _selectedHour = [components hour];
-        _selectedMinute = [components minute];
-        _selectedSecond = [components second];
-        
-        if (self.datePickerMode == HooDatePickerModeDate || self.datePickerMode == HooDatePickerModeDateAndTime) {
-            [self setScrollView:_scrollViewDays atIndex:(_selectedDay - 1) animated:animated];
-            [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
-            [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
-        }
-        
-        if (self.datePickerMode == HooDatePickerModeTime || self.datePickerMode == HooDatePickerModeDateAndTime) {
-            [self setScrollView:_scrollViewHours atIndex:_selectedHour animated:animated];
-            [self setScrollView:_scrollViewMinutes atIndex:_selectedMinute animated:animated];
-            [self setScrollView:_scrollViewSeconds atIndex:_selectedSecond animated:animated];
-        }
-        
-        if (self.datePickerMode == HooDatePickerModeYearAndMonth) {
-            [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
-            [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
-        }
-        
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
-            [self.delegate datePicker:self dateDidChange:[self getDate]];
-        }
+    if (!date) return;
+    NSDateComponents* components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:date];
+    
+    _selectedDay = [components day];
+    _selectedMonth = [components month];
+    _selectedYear = [components year];
+    _selectedHour = [components hour];
+    _selectedMinute = [components minute];
+    _selectedSecond = [components second];
+    
+    if (self.datePickerMode == HooDatePickerModeDate || self.datePickerMode == HooDatePickerModeDateAndTime) {
+        [self setScrollView:_scrollViewDays atIndex:(_selectedDay - 1) animated:animated];
+        [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
+        [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
+    }
+    
+    if (self.datePickerMode == HooDatePickerModeTime || self.datePickerMode == HooDatePickerModeDateAndTime) {
+        [self setScrollView:_scrollViewHours atIndex:_selectedHour animated:animated];
+        [self setScrollView:_scrollViewMinutes atIndex:_selectedMinute animated:animated];
+        [self setScrollView:_scrollViewSeconds atIndex:_selectedSecond animated:animated];
+    }
+    
+    if (self.datePickerMode == HooDatePickerModeYearAndMonth) {
+        [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
+        [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
+    }
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
+        [self.delegate datePicker:self dateDidChange:[self getDate]];
     }
 }
 
@@ -1550,12 +1557,4 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     return [self convertToDateDay:_selectedDay month:_selectedMonth year:_selectedYear hours:_selectedHour minutes:_selectedMinute seconds:_selectedSecond];
 }
 
-#pragma mark - autoResize
-- (UIViewAutoresizing)allAutoresizingMasksFlags {
-    UIViewAutoresizing mask = UIViewAutoresizingFlexibleLeftMargin |
-    UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleWidth |
-    UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin |
-    UIViewAutoresizingFlexibleBottomMargin;
-    return mask;
-}
 @end
