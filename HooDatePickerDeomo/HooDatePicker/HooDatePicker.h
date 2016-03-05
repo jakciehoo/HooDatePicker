@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger,HooDatePickerMode) {
-    HooDatePickerModeTime,
-    HooDatePickerModeDate,
-    HooDatePickerModeDateAndTime,
-    HooDatePickerModeYearAndMonth
+    HooDatePickerModeTime,    // Displays hour, minute, and optionally AM/PM designation depending on the locale setting (e.g. 6 | 53 | PM)
+    HooDatePickerModeDate,     // Displays month, day, and year depending on the locale setting (e.g. November | 15 | 2007)
+    HooDatePickerModeDateAndTime, // Displays date, hour, minute, and optionally AM/PM designation depending on the locale setting (e.g. Wed Nov 15 | 6 | 53 | PM)
+    HooDatePickerModeYearAndMonth // Displays Year, Month,  designation depending on the locale setting (e.g. November | 2007)
 };
 
 @class HooDatePicker;
@@ -25,7 +25,9 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 @end
 
 @interface HooDatePicker : UIControl
-
+/**
+ *  Title on the top of HooDatePicker
+ */
 @property (nonatomic, copy) NSString *title;
 
 @property (nonatomic, strong) NSDate *date;
@@ -35,7 +37,9 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 @property (nonatomic, strong) NSDate *minimumDate;
 
 @property (nonatomic, strong) NSDate *maximumDate;
-
+/**
+ * default is HooDatePickerModeDate. setting nil returns to default
+ */
 @property (nonatomic, assign) HooDatePickerMode datePickerMode;
 /**
  *  default is [NSLocale currentLocale]. setting nil returns to default
@@ -49,22 +53,22 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
  *   default is nil. use current time zone or time zone from calendar
  */
 @property(nonatomic,retain) NSTimeZone    *timeZone;
-
-@property (nonatomic, strong) NSObject<HooDatePickerDelegate> *delegate;
 /**
  *  read only property, indicate in datepicker is open.
  */
 @property(nonatomic,readonly) BOOL        isOpen;
 
+@property (nonatomic, strong) NSObject<HooDatePickerDelegate> *delegate;
+
 - (instancetype)initWithSuperView:(UIView*)superView;
-
-- (void)show;
-
-- (void)dismiss;
 
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;
 
 - (void)setTintColor:(UIColor *)tintColor;
 
 - (void)setHighlightColor:(UIColor *)highlightColor;
+
+- (void)show;
+
+- (void)dismiss;
 @end

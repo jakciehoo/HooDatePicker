@@ -69,43 +69,13 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 @interface HooDatePicker ()<UIScrollViewDelegate> {
     // Lines :
-    UIView *_lineDaysTop;
-    UIView *_lineDaysBottom;
-    UIView *_lineMonthsTop;
-    UIView *_lineMonthsBottom;
-    UIView *_lineYearsTop;
-    UIView *_lineYearsBottom;
-    UIView *_lineDatesTop;
-    UIView *_lineDatesBottom;
-    UIView *_lineHoursTop;
-    UIView *_lineHoursBottom;
-    UIView *_lineMinutesTop;
-    UIView *_lineMinutesBottom;
-    UIView *_lineSecondsTop;
-    UIView *_lineSecondsBottom;
+    UIView *_lineDaysTop, *_lineDaysBottom, *_lineMonthsTop, *_lineMonthsBottom, *_lineYearsTop,*_lineYearsBottom, *_lineDatesTop, *_lineDatesBottom, *_lineHoursTop, *_lineHoursBottom, *_lineMinutesTop, *_lineMinutesBottom, *_lineSecondsTop, *_lineSecondsBottom;
     
     // Labels :
-    NSMutableArray *_labelsDays;
-    NSMutableArray *_labelsMonths;
-    NSMutableArray *_labelsYears;
+    NSMutableArray *_labelsDays, *_labelsMonths, *_labelsYears, *_labelsDates, *_labelsHours, *_labelsMinutes, *_labelsSeconds;
     
-    NSMutableArray *_labelsDates;
-    
-    NSMutableArray *_labelsHours;
-    NSMutableArray *_labelsMinutes;
-    NSMutableArray *_labelsSeconds;
-    
-    // Date selected :
-    NSInteger _selectedDay;
-    NSInteger _selectedMonth;
-    NSInteger _selectedYear;
-    
-    NSInteger _selectedDate;
-    
-    // Time selected :
-    NSInteger _selectedHour;
-    NSInteger _selectedMinute;
-    NSInteger _selectedSecond;
+    // Date and time selected :
+    NSInteger _selectedDay,  _selectedMonth, _selectedYear,  _selectedDate, _selectedHour, _selectedMinute,  _selectedSecond;
     
     // First init flag :
     BOOL _isInitialized;
@@ -200,6 +170,77 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     return _dateFormatter;
 }
 
+- (NSMutableArray *)months {
+    NSMutableArray *months = [[NSMutableArray alloc] init];
+    for (int monthNumber = 1; monthNumber <= 12; monthNumber++) {
+        NSString *dateString = [NSString stringWithFormat: @"%d", monthNumber];
+        NSDateFormatter* dateFormatter = self.dateFormatter;
+        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
+        [dateFormatter setLocale:self.locale];
+        [dateFormatter setDateFormat:@"MM"];
+        NSDate* myDate = [dateFormatter dateFromString:dateString];
+        
+        NSDateFormatter *formatter = self.dateFormatter;
+        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
+        [dateFormatter setLocale:self.locale];
+        [formatter setDateFormat:@"MMM"];
+        NSString *stringFromDate = [formatter stringFromDate:myDate];
+        
+        [months addObject:stringFromDate];
+    }
+    _months = months;
+    return _months;
+}
+
+- (NSMutableArray*)hours {
+    if (!_hours) {
+        NSMutableArray *hours = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < 24; i++) {
+            if (i < 10) {
+                [hours addObject:[NSString stringWithFormat:@"0%d", i]];
+            } else {
+                [hours addObject:[NSString stringWithFormat:@"%d", i]];
+            }
+        }
+        _hours = hours;
+    }
+    return _hours;
+}
+
+- (NSMutableArray*)minutes {
+    if (!_minutes) {
+        NSMutableArray *minutes = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
+                [minutes addObject:[NSString stringWithFormat:@"0%d", i]];
+            } else {
+                [minutes addObject:[NSString stringWithFormat:@"%d", i]];
+            }
+        }
+        _minutes = minutes;
+    }
+    return _minutes;
+}
+
+- (NSMutableArray*)seconds {
+    if (!_seconds) {
+        
+        NSMutableArray *seconds = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
+                [seconds addObject:[NSString stringWithFormat:@"0%d", i]];
+            } else {
+                [seconds addObject:[NSString stringWithFormat:@"%d", i]];
+            }
+        }
+        _seconds = seconds;
+    }
+    return _seconds;
+}
+
 - (void)setTintColor:(UIColor *)tintColor {
     _tintColor = tintColor;
     [self setupControl];
@@ -261,11 +302,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     // Generate collections days, months, years, hours, minutes and seconds :
     _years = [self getYears];
-    _months = [self getMonths];
     _days = [self getDaysInMonth:[NSDate date]];
-    _hours = [self getHours];
-    _minutes = [self getMinutes];
-    _seconds = [self getSeconds];
     _dates = [self getDates];
     
     // Background :
@@ -426,9 +463,9 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     _labelsMonths = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < _months.count; i++) {
+    for (int i = 0; i < self.months.count; i++) {
         
-        NSString *day = (NSString*)[_months objectAtIndex:i];
+        NSString *day = (NSString*)[self.months objectAtIndex:i];
         
         UILabel *labelDay = [[UILabel alloc] initWithFrame:CGRectMake(0.0, (i * kHooDatePickerScrollViewItemHeight) + offsetContentScrollView, _scrollViewMonths.frame.size.width, kHooDatePickerScrollViewItemHeight)];
         labelDay.text = day;
@@ -441,7 +478,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [_scrollViewMonths addSubview:labelDay];
     }
     
-    _scrollViewMonths.contentSize = CGSizeMake(_scrollViewMonths.frame.size.width, (kHooDatePickerScrollViewItemHeight * _months.count) + (offsetContentScrollView * 2));
+    _scrollViewMonths.contentSize = CGSizeMake(_scrollViewMonths.frame.size.width, (kHooDatePickerScrollViewItemHeight * self.months.count) + (offsetContentScrollView * 2));
 }
 
 - (void)removeSelectorMonths {
@@ -662,9 +699,9 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     _labelsHours = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < _hours.count; i++) {
+    for (int i = 0; i < self.hours.count; i++) {
         
-        NSString *hour = (NSString*)[_hours objectAtIndex:i];
+        NSString *hour = (NSString*)[self.hours objectAtIndex:i];
         
         UILabel *labelHour = [[UILabel alloc] initWithFrame:CGRectMake(0, (i * kHooDatePickerScrollViewItemHeight) + offsetContentScrollView, _scrollViewHours.frame.size.width, kHooDatePickerScrollViewItemHeight)];
         labelHour.text = hour;
@@ -677,7 +714,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [_scrollViewHours addSubview:labelHour];
     }
     
-    _scrollViewHours.contentSize = CGSizeMake(_scrollViewHours.frame.size.width, (kHooDatePickerScrollViewItemHeight * _hours.count) + (offsetContentScrollView * 2));
+    _scrollViewHours.contentSize = CGSizeMake(_scrollViewHours.frame.size.width, (kHooDatePickerScrollViewItemHeight * self.hours.count) + (offsetContentScrollView * 2));
 }
 
 - (void)removeSelectorHours {
@@ -738,9 +775,9 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     _labelsMinutes = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < _minutes.count; i++) {
+    for (int i = 0; i < self.minutes.count; i++) {
         
-        NSString *minute = (NSString*)[_minutes objectAtIndex:i];
+        NSString *minute = (NSString*)[self.minutes objectAtIndex:i];
         
         UILabel *labelMinute = [[UILabel alloc] initWithFrame:CGRectMake(0, (i * kHooDatePickerScrollViewItemHeight) + offsetContentScrollView, _scrollViewMinutes.frame.size.width, kHooDatePickerScrollViewItemHeight)];
         labelMinute.text = minute;
@@ -753,7 +790,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [_scrollViewMinutes addSubview:labelMinute];
     }
     
-    _scrollViewMinutes.contentSize = CGSizeMake(_scrollViewMinutes.frame.size.width, (kHooDatePickerScrollViewItemHeight * _minutes.count) + (offsetContentScrollView * 2));
+    _scrollViewMinutes.contentSize = CGSizeMake(_scrollViewMinutes.frame.size.width, (kHooDatePickerScrollViewItemHeight * self.minutes.count) + (offsetContentScrollView * 2));
 }
 
 - (void)removeSelectorMinutes {
@@ -814,9 +851,9 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     _labelsSeconds = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < _seconds.count; i++) {
+    for (int i = 0; i < self.seconds.count; i++) {
         
-        NSString *second = (NSString*)[_seconds objectAtIndex:i];
+        NSString *second = (NSString*)[self.seconds objectAtIndex:i];
         
         UILabel *labelSecond = [[UILabel alloc] initWithFrame:CGRectMake(0, (i * kHooDatePickerScrollViewItemHeight) + offsetContentScrollView, _scrollViewSeconds.frame.size.width, kHooDatePickerScrollViewItemHeight)];
         labelSecond.text = second;
@@ -829,7 +866,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [_scrollViewSeconds addSubview:labelSecond];
     }
     
-    _scrollViewSeconds.contentSize = CGSizeMake(_scrollViewSeconds.frame.size.width, (kHooDatePickerScrollViewItemHeight * _seconds.count) + (offsetContentScrollView * 2));
+    _scrollViewSeconds.contentSize = CGSizeMake(_scrollViewSeconds.frame.size.width, (kHooDatePickerScrollViewItemHeight * self.seconds.count) + (offsetContentScrollView * 2));
 }
 
 - (void)removeSelectorSeconds {
@@ -971,32 +1008,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     return years;
 }
 
-- (NSMutableArray*)getMonths {
-    
-    NSMutableArray *months = [[NSMutableArray alloc] init];
-    
-    for (int monthNumber = 1; monthNumber <= 12; monthNumber++) {
-        
-        NSString *dateString = [NSString stringWithFormat: @"%d", monthNumber];
-        
-        NSDateFormatter* dateFormatter = self.dateFormatter;
-        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
-        [dateFormatter setLocale:self.locale];
-        [dateFormatter setDateFormat:@"MM"];
-        NSDate* myDate = [dateFormatter dateFromString:dateString];
-        
-        NSDateFormatter *formatter = self.dateFormatter;
-        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
-        [dateFormatter setLocale:self.locale];
-        [formatter setDateFormat:@"MMM"];
-        NSString *stringFromDate = [formatter stringFromDate:myDate];
-        
-        [months addObject:stringFromDate];
-    }
-    
-    return months;
-}
-
 - (NSMutableArray*)getDates {
     
     NSMutableArray *dates = [[NSMutableArray alloc] init];
@@ -1045,51 +1056,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     return days;
 }
 
-- (NSMutableArray*)getHours {
-    
-    NSMutableArray *hours = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < 24; i++) {
-        if (i < 10) {
-            [hours addObject:[NSString stringWithFormat:@"0%d", i]];
-        } else {
-            [hours addObject:[NSString stringWithFormat:@"%d", i]];
-        }
-    }
-    
-    return hours;
-}
-
-- (NSMutableArray*)getMinutes {
-    
-    NSMutableArray *minutes = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < 60; i++) {
-        if (i < 10) {
-            [minutes addObject:[NSString stringWithFormat:@"0%d", i]];
-        } else {
-            [minutes addObject:[NSString stringWithFormat:@"%d", i]];
-        }
-    }
-    
-    return minutes;
-}
-
-- (NSMutableArray*)getSeconds {
-    
-    NSMutableArray *seconds = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < 60; i++) {
-        if (i < 10) {
-            [seconds addObject:[NSString stringWithFormat:@"0%d", i]];
-        } else {
-            [seconds addObject:[NSString stringWithFormat:@"%d", i]];
-        }
-    }
-    
-    return seconds;
-}
-
 #pragma mark - UIScrollView Delegate
 
 - (void)singleTapGestureDaysCaptured:(UITapGestureRecognizer *)gesture {
@@ -1127,7 +1093,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         
     } else if (touchY > (_lineMonthsBottom.frame.origin.y)) {
         
-        if (_selectedMonth < _months.count) {
+        if (_selectedMonth < self.months.count) {
             _selectedMonth += 1;
             [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:YES];
         }
@@ -1193,7 +1159,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         
     } else if (touchY > (_lineHoursBottom.frame.origin.y)) {
         
-        if (_selectedHour < _hours.count - 1) {
+        if (_selectedHour < self.hours.count - 1) {
             _selectedHour += 1;
             [self setScrollView:_scrollViewHours atIndex:_selectedHour animated:YES];
         }
@@ -1214,7 +1180,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         
     } else if (touchY > (_lineMinutesBottom.frame.origin.y)) {
         
-        if (_selectedMinute < _minutes.count - 1) {
+        if (_selectedMinute < self.minutes.count - 1) {
             _selectedMinute += 1;
             [self setScrollView:_scrollViewMinutes atIndex:_selectedMinute animated:YES];
         }
@@ -1235,7 +1201,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         
     } else if (touchY > (_lineSecondsBottom.frame.origin.y)) {
         
-        if (_selectedSecond < _seconds.count - 1) {
+        if (_selectedSecond < self.seconds.count - 1) {
             _selectedSecond += 1;
             [self setScrollView:_scrollViewSeconds atIndex:_selectedSecond animated:YES];
         }
