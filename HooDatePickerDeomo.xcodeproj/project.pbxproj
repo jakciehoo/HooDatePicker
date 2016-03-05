@@ -16,6 +16,8 @@
 		225C16551C8ADF7A00040297 /* HooDatePickerDeomoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C16541C8ADF7A00040297 /* HooDatePickerDeomoTests.m */; };
 		225C16601C8ADF7A00040297 /* HooDatePickerDeomoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C165F1C8ADF7A00040297 /* HooDatePickerDeomoUITests.m */; };
 		225C16701C8ADFD900040297 /* HooDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C166F1C8ADFD900040297 /* HooDatePicker.m */; };
+		225C16721C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png in Resources */ = {isa = PBXBuildFile; fileRef = 225C16711C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png */; };
+		225C16741C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png in Resources */ = {isa = PBXBuildFile; fileRef = 225C16731C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		225C16611C8ADF7A00040297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		225C166E1C8ADFD900040297 /* HooDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HooDatePicker.h; sourceTree = "<group>"; };
 		225C166F1C8ADFD900040297 /* HooDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HooDatePicker.m; sourceTree = "<group>"; };
+		225C16711C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png"; sourceTree = "<group>"; };
+		225C16731C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +114,8 @@
 				225C16401C8ADF7A00040297 /* ViewController.h */,
 				225C16411C8ADF7A00040297 /* ViewController.m */,
 				225C16431C8ADF7A00040297 /* Main.storyboard */,
+				225C16711C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png */,
+				225C16731C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png */,
 				225C16461C8ADF7A00040297 /* Assets.xcassets */,
 				225C16481C8ADF7A00040297 /* LaunchScreen.storyboard */,
 				225C164B1C8ADF7A00040297 /* Info.plist */,
@@ -259,6 +265,8 @@
 				225C164A1C8ADF7A00040297 /* LaunchScreen.storyboard in Resources */,
 				225C16471C8ADF7A00040297 /* Assets.xcassets in Resources */,
 				225C16451C8ADF7A00040297 /* Main.storyboard in Resources */,
+				225C16741C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png in Resources */,
+				225C16721C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

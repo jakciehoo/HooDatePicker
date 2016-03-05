@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.datePicker = [[HooDatePicker alloc] initWithSuperView:self.view];
     self.datePicker.delegate = self;
-    self.datePicker.datePickerMode = HooDatePickerModeDate;
+    self.datePicker.datePickerMode = HooDatePickerModeYearAndMonth;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
     NSDate *maxDate = [dateFormatter dateFromString:@"01-01-2050 00:00:00"];
