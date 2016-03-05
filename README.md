@@ -14,6 +14,8 @@ HooDatePickerModeDate Demo picture:
 ![Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png](http://upload-images.jianshu.io/upload_images/1112722-99526bace022799d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 HooDatePickerModeYearAndMonth Demo picture
+
+
 ![Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png](http://upload-images.jianshu.io/upload_images/1112722-134a88183835d837.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
@@ -28,7 +30,7 @@ datePicker.datePickerMode = HooDatePickerModeYearAndMonth;
 ### 更多用法More:
 ==================================================
 1.设置其他属性
-
+```java  
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
     NSDate *maxDate = [dateFormatter dateFromString:@"01-01-2050 00:00:00"];
@@ -38,7 +40,7 @@ datePicker.datePickerMode = HooDatePickerModeYearAndMonth;
     self.datePicker.maximumDate = maxDate;//设置显示的最大日期
     [self.datePicker setTintColor:[UIColor redColor]];//设置主色
     [self.datePicker setHighlightColor:[UIColor yellowColor]];//设置高亮颜色
-
+```
 2.相关代理
 ```java  
 @protocol HooDatePickerDelegate<NSObject>
