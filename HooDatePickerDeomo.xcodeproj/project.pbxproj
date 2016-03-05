@@ -1,0 +1,533 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		225C163C1C8ADF7A00040297 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C163B1C8ADF7A00040297 /* main.m */; };
+		225C163F1C8ADF7A00040297 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C163E1C8ADF7A00040297 /* AppDelegate.m */; };
+		225C16421C8ADF7A00040297 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C16411C8ADF7A00040297 /* ViewController.m */; };
+		225C16451C8ADF7A00040297 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 225C16431C8ADF7A00040297 /* Main.storyboard */; };
+		225C16471C8ADF7A00040297 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 225C16461C8ADF7A00040297 /* Assets.xcassets */; };
+		225C164A1C8ADF7A00040297 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 225C16481C8ADF7A00040297 /* LaunchScreen.storyboard */; };
+		225C16551C8ADF7A00040297 /* HooDatePickerDeomoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C16541C8ADF7A00040297 /* HooDatePickerDeomoTests.m */; };
+		225C16601C8ADF7A00040297 /* HooDatePickerDeomoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C165F1C8ADF7A00040297 /* HooDatePickerDeomoUITests.m */; };
+		225C16701C8ADFD900040297 /* HooDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C166F1C8ADFD900040297 /* HooDatePicker.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		225C16511C8ADF7A00040297 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 225C162F1C8ADF7A00040297 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 225C16361C8ADF7A00040297;
+			remoteInfo = HooDatePickerDeomo;
+		};
+		225C165C1C8ADF7A00040297 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 225C162F1C8ADF7A00040297 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 225C16361C8ADF7A00040297;
+			remoteInfo = HooDatePickerDeomo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		225C16371C8ADF7A00040297 /* HooDatePickerDeomo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HooDatePickerDeomo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		225C163B1C8ADF7A00040297 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		225C163D1C8ADF7A00040297 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		225C163E1C8ADF7A00040297 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		225C16401C8ADF7A00040297 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		225C16411C8ADF7A00040297 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		225C16441C8ADF7A00040297 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		225C16461C8ADF7A00040297 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		225C16491C8ADF7A00040297 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		225C164B1C8ADF7A00040297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		225C16501C8ADF7A00040297 /* HooDatePickerDeomoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HooDatePickerDeomoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		225C16541C8ADF7A00040297 /* HooDatePickerDeomoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HooDatePickerDeomoTests.m; sourceTree = "<group>"; };
+		225C16561C8ADF7A00040297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		225C165B1C8ADF7A00040297 /* HooDatePickerDeomoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HooDatePickerDeomoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		225C165F1C8ADF7A00040297 /* HooDatePickerDeomoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HooDatePickerDeomoUITests.m; sourceTree = "<group>"; };
+		225C16611C8ADF7A00040297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		225C166E1C8ADFD900040297 /* HooDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HooDatePicker.h; sourceTree = "<group>"; };
+		225C166F1C8ADFD900040297 /* HooDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HooDatePicker.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		225C16341C8ADF7A00040297 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		225C164D1C8ADF7A00040297 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		225C16581C8ADF7A00040297 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		225C162E1C8ADF7A00040297 = {
+			isa = PBXGroup;
+			children = (
+				225C16391C8ADF7A00040297 /* HooDatePickerDeomo */,
+				225C16531C8ADF7A00040297 /* HooDatePickerDeomoTests */,
+				225C165E1C8ADF7A00040297 /* HooDatePickerDeomoUITests */,
+				225C16381C8ADF7A00040297 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		225C16381C8ADF7A00040297 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				225C16371C8ADF7A00040297 /* HooDatePickerDeomo.app */,
+				225C16501C8ADF7A00040297 /* HooDatePickerDeomoTests.xctest */,
+				225C165B1C8ADF7A00040297 /* HooDatePickerDeomoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		225C16391C8ADF7A00040297 /* HooDatePickerDeomo */ = {
+			isa = PBXGroup;
+			children = (
+				225C166D1C8ADF9300040297 /* HooDatePicker */,
+				225C163D1C8ADF7A00040297 /* AppDelegate.h */,
+				225C163E1C8ADF7A00040297 /* AppDelegate.m */,
+				225C16401C8ADF7A00040297 /* ViewController.h */,
+				225C16411C8ADF7A00040297 /* ViewController.m */,
+				225C16431C8ADF7A00040297 /* Main.storyboard */,
+				225C16461C8ADF7A00040297 /* Assets.xcassets */,
+				225C16481C8ADF7A00040297 /* LaunchScreen.storyboard */,
+				225C164B1C8ADF7A00040297 /* Info.plist */,
+				225C163A1C8ADF7A00040297 /* Supporting Files */,
+			);
+			path = HooDatePickerDeomo;
+			sourceTree = "<group>";
+		};
+		225C163A1C8ADF7A00040297 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				225C163B1C8ADF7A00040297 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		225C16531C8ADF7A00040297 /* HooDatePickerDeomoTests */ = {
+			isa = PBXGroup;
+			children = (
+				225C16541C8ADF7A00040297 /* HooDatePickerDeomoTests.m */,
+				225C16561C8ADF7A00040297 /* Info.plist */,
+			);
+			path = HooDatePickerDeomoTests;
+			sourceTree = "<group>";
+		};
+		225C165E1C8ADF7A00040297 /* HooDatePickerDeomoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				225C165F1C8ADF7A00040297 /* HooDatePickerDeomoUITests.m */,
+				225C16611C8ADF7A00040297 /* Info.plist */,
+			);
+			path = HooDatePickerDeomoUITests;
+			sourceTree = "<group>";
+		};
+		225C166D1C8ADF9300040297 /* HooDatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				225C166E1C8ADFD900040297 /* HooDatePicker.h */,
+				225C166F1C8ADFD900040297 /* HooDatePicker.m */,
+			);
+			path = HooDatePicker;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		225C16361C8ADF7A00040297 /* HooDatePickerDeomo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 225C16641C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomo" */;
+			buildPhases = (
+				225C16331C8ADF7A00040297 /* Sources */,
+				225C16341C8ADF7A00040297 /* Frameworks */,
+				225C16351C8ADF7A00040297 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HooDatePickerDeomo;
+			productName = HooDatePickerDeomo;
+			productReference = 225C16371C8ADF7A00040297 /* HooDatePickerDeomo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		225C164F1C8ADF7A00040297 /* HooDatePickerDeomoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 225C16671C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoTests" */;
+			buildPhases = (
+				225C164C1C8ADF7A00040297 /* Sources */,
+				225C164D1C8ADF7A00040297 /* Frameworks */,
+				225C164E1C8ADF7A00040297 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				225C16521C8ADF7A00040297 /* PBXTargetDependency */,
+			);
+			name = HooDatePickerDeomoTests;
+			productName = HooDatePickerDeomoTests;
+			productReference = 225C16501C8ADF7A00040297 /* HooDatePickerDeomoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		225C165A1C8ADF7A00040297 /* HooDatePickerDeomoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 225C166A1C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoUITests" */;
+			buildPhases = (
+				225C16571C8ADF7A00040297 /* Sources */,
+				225C16581C8ADF7A00040297 /* Frameworks */,
+				225C16591C8ADF7A00040297 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				225C165D1C8ADF7A00040297 /* PBXTargetDependency */,
+			);
+			name = HooDatePickerDeomoUITests;
+			productName = HooDatePickerDeomoUITests;
+			productReference = 225C165B1C8ADF7A00040297 /* HooDatePickerDeomoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		225C162F1C8ADF7A00040297 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = hujianghua;
+				TargetAttributes = {
+					225C16361C8ADF7A00040297 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					225C164F1C8ADF7A00040297 = {
+						CreatedOnToolsVersion = 7.2;
+						TestTargetID = 225C16361C8ADF7A00040297;
+					};
+					225C165A1C8ADF7A00040297 = {
+						CreatedOnToolsVersion = 7.2;
+						TestTargetID = 225C16361C8ADF7A00040297;
+					};
+				};
+			};
+			buildConfigurationList = 225C16321C8ADF7A00040297 /* Build configuration list for PBXProject "HooDatePickerDeomo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 225C162E1C8ADF7A00040297;
+			productRefGroup = 225C16381C8ADF7A00040297 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				225C16361C8ADF7A00040297 /* HooDatePickerDeomo */,
+				225C164F1C8ADF7A00040297 /* HooDatePickerDeomoTests */,
+				225C165A1C8ADF7A00040297 /* HooDatePickerDeomoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		225C16351C8ADF7A00040297 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				225C164A1C8ADF7A00040297 /* LaunchScreen.storyboard in Resources */,
+				225C16471C8ADF7A00040297 /* Assets.xcassets in Resources */,
+				225C16451C8ADF7A00040297 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		225C164E1C8ADF7A00040297 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		225C16591C8ADF7A00040297 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		225C16331C8ADF7A00040297 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				225C16701C8ADFD900040297 /* HooDatePicker.m in Sources */,
+				225C16421C8ADF7A00040297 /* ViewController.m in Sources */,
+				225C163F1C8ADF7A00040297 /* AppDelegate.m in Sources */,
+				225C163C1C8ADF7A00040297 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		225C164C1C8ADF7A00040297 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				225C16551C8ADF7A00040297 /* HooDatePickerDeomoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		225C16571C8ADF7A00040297 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				225C16601C8ADF7A00040297 /* HooDatePickerDeomoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		225C16521C8ADF7A00040297 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 225C16361C8ADF7A00040297 /* HooDatePickerDeomo */;
+			targetProxy = 225C16511C8ADF7A00040297 /* PBXContainerItemProxy */;
+		};
+		225C165D1C8ADF7A00040297 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 225C16361C8ADF7A00040297 /* HooDatePickerDeomo */;
+			targetProxy = 225C165C1C8ADF7A00040297 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		225C16431C8ADF7A00040297 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				225C16441C8ADF7A00040297 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		225C16481C8ADF7A00040297 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				225C16491C8ADF7A00040297 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		225C16621C8ADF7A00040297 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		225C16631C8ADF7A00040297 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		225C16651C8ADF7A00040297 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = HooDatePickerDeomo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		225C16661C8ADF7A00040297 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = HooDatePickerDeomo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		225C16681C8ADF7A00040297 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = HooDatePickerDeomoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HooDatePickerDeomo.app/HooDatePickerDeomo";
+			};
+			name = Debug;
+		};
+		225C16691C8ADF7A00040297 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = HooDatePickerDeomoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HooDatePickerDeomo.app/HooDatePickerDeomo";
+			};
+			name = Release;
+		};
+		225C166B1C8ADF7A00040297 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = HooDatePickerDeomoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = HooDatePickerDeomo;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		225C166C1C8ADF7A00040297 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = HooDatePickerDeomoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = HooDatePickerDeomo;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		225C16321C8ADF7A00040297 /* Build configuration list for PBXProject "HooDatePickerDeomo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				225C16621C8ADF7A00040297 /* Debug */,
+				225C16631C8ADF7A00040297 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		225C16641C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				225C16651C8ADF7A00040297 /* Debug */,
+				225C16661C8ADF7A00040297 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		225C16671C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				225C16681C8ADF7A00040297 /* Debug */,
+				225C16691C8ADF7A00040297 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		225C166A1C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				225C166B1C8ADF7A00040297 /* Debug */,
+				225C166C1C8ADF7A00040297 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 225C162F1C8ADF7A00040297 /* Project object */;
+}
