@@ -37,7 +37,6 @@ static CGFloat const kHooDatePickerLineMargin = 15.0f;
 
 static CGFloat const kHooDatePickerPadding = 15.0f;
 
-
 // Constants times :
 static CGFloat const kHooDatePickerAnimationDuration = 0.4f;
 
@@ -83,6 +82,12 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 }
 
+// Data of years, months, days, dates, hours, minutes, seconds
+@property (nonatomic, strong) NSMutableArray *years, *months, *days, *dates, *hours, *minutes, *seconds;
+
+// ScrollView for Years, Months, days ,Dates ,Hours ,Minute ,Seconds
+@property (nonatomic, strong) UIScrollView *scrollViewYears, *scrollViewMonths, *scrollViewDays, *scrollViewDates, *scrollViewHours, *scrollViewMinutes,*scrollViewSeconds;
+
 @property (nonatomic, strong) UIView *superView;
 
 @property (nonatomic, copy) UIView *dimBackgroundView;
@@ -95,24 +100,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 @property (nonatomic, strong) UIColor *highlightColor;
 
-// Data of years, months, days, dates, hours, minutes, seconds
-@property (nonatomic, strong) NSMutableArray *years;
-@property (nonatomic, strong) NSMutableArray *months;
-@property (nonatomic, strong) NSMutableArray *days;
-@property (nonatomic, strong) NSMutableArray *dates;
-@property (nonatomic, strong) NSMutableArray *hours;
-@property (nonatomic, strong) NSMutableArray *minutes;
-@property (nonatomic, strong) NSMutableArray *seconds;
-
-// ScrollView for Years, Months, days ,Dates ,Hours ,Minute ,Seconds
-@property (nonatomic, strong) UIScrollView *scrollViewYears;
-@property (nonatomic, strong) UIScrollView *scrollViewMonths;
-@property (nonatomic, strong) UIScrollView *scrollViewDays;
-@property (nonatomic, strong) UIScrollView *scrollViewDates;
-@property (nonatomic, strong) UIScrollView *scrollViewHours;
-@property (nonatomic, strong) UIScrollView *scrollViewMinutes;
-@property (nonatomic, strong) UIScrollView *scrollViewSeconds;
-
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
@@ -122,12 +109,10 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 #pragma mark - Getters and Setters
 
 - (UIView *)dimBackgroundView {
-    
     if(!_dimBackgroundView) {
         _dimBackgroundView = [[UIView alloc] initWithFrame:self.superView.bounds];
         [_dimBackgroundView setTranslatesAutoresizingMaskIntoConstraints:YES];
         _dimBackgroundView.backgroundColor = [UIColor clearColor];
-        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
         [_dimBackgroundView addGestureRecognizer:tap];
     }
@@ -330,9 +315,6 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     }
     
     if (self.datePickerMode == HooDatePickerModeYearAndMonth) {
-//        [self buildSelectorDaysOffsetX:0.0 andWidth:kHooDatePickerScrollViewDaysWidth];
-//        [self buildSelectorMonthsOffsetX:0.0 andWidth:self.frame.size.width * 0.5];
-//        [self buildSelectorYearsOffsetX:(_scrollViewMonths.frame.origin.x + _scrollViewMonths.frame.size.width) andWidth:self.frame.size.width * 0.5];
         [self buildSelectorYearsOffsetX:0.0 andWidth:self.frame.size.width * 0.5];
         [self buildSelectorMonthsOffsetX:(_scrollViewYears.frame.size.width + kHooDatePickerScrollViewLeftMargin) andWidth:self.frame.size.width * 0.5];
 
@@ -619,7 +601,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     NSDateFormatter *dateFormatter = self.dateFormatter;
     [dateFormatter setCalendar:self.calendar];
     [dateFormatter setTimeZone:self.timeZone];
-    [dateFormatter setDateFormat:@"EEE dd MMM"];
+    [dateFormatter setDateFormat:@"YY MMM dd EEE"];
     
     for (int i = 0; i < _dates.count; i++) {
         
@@ -1012,6 +994,9 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     NSMutableArray *dates = [[NSMutableArray alloc] init];
     
+    NSDateComponents* currentComponents = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
+    NSInteger currentYear = [currentComponents year];
+    
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
     [dateComponents setCalendar:self.calendar];
     [dateComponents setTimeZone:self.timeZone];
@@ -1020,10 +1005,20 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [dateComponents setHour:0];
     [dateComponents setMinute:0];
     [dateComponents setSecond:0];
-    [dateComponents setYear:_minYear];
+    [dateComponents setYear:currentYear];
+    
+    NSDateComponents *maxComponents = [[NSDateComponents alloc] init];
+    [maxComponents setCalendar:self.calendar];
+    [maxComponents setTimeZone:self.timeZone];
+    [maxComponents setDay:1];
+    [maxComponents setMonth:1];
+    [maxComponents setHour:0];
+    [maxComponents setMinute:0];
+    [maxComponents setSecond:0];
+    [maxComponents setYear:currentYear + 1];
     
     NSDate *yearMin = [dateComponents date];
-    NSDate *yearMax = [NSDate date];
+    NSDate *yearMax = [maxComponents date];
     
     NSInteger timestampMin = [yearMin timeIntervalSince1970];
     NSInteger timestampMax = [yearMax timeIntervalSince1970];
@@ -1239,7 +1234,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self setScrollView:scrollView atIndex:index animated:YES];
     
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
+    if ([self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
         [self.delegate datePicker:self dateDidChange:[self getDate]];
     }
 }
@@ -1252,7 +1247,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self setScrollView:scrollView atIndex:index animated:YES];
     
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
+    if ([self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
         [self.delegate datePicker:self dateDidChange:[self getDate]];
     }
 }
@@ -1281,6 +1276,8 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         _selectedMinute = index; // 0 to 59
     } else if (scrollView.tag == ScrollViewTagValue_SECONDS) {
         _selectedSecond = index; // 0 to 59
+    } else if (scrollView.tag == ScrollViewTagValue_DATES) {
+        _selectedDate = index + 1;
     }
 }
 
@@ -1396,7 +1393,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     }
 }
 
-- (NSDate*)convertToDateDay:(NSInteger)day month:(NSInteger)month year:(NSInteger)year hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds; {
+- (NSDate*)convertToDateDay:(NSInteger)day month:(NSInteger)month year:(NSInteger)year hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds {
     
     NSMutableString *dateString = [[NSMutableString alloc] init];
     
