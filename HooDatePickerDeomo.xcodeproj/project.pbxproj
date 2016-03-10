@@ -434,6 +434,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HooDatePickerDeomo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -445,6 +446,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HooDatePickerDeomo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jakciehoo.HooDatePickerDeomo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -518,6 +520,7 @@
 				225C16661C8ADF7A00040297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		225C16671C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoTests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +529,7 @@
 				225C16691C8ADF7A00040297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		225C166A1C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoUITests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +538,7 @@
 				225C166C1C8ADF7A00040297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

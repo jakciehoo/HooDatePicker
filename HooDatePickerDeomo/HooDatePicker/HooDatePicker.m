@@ -419,9 +419,9 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     _lineMonthsTop.backgroundColor = self.highlightColor;
     [self addSubview:_lineMonthsTop];
     
-    _lineDaysBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewMonths.frame.origin.x + kHooDatePickerLineMargin, _scrollViewMonths.frame.origin.y + (_scrollViewMonths.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
-    _lineDaysBottom.backgroundColor = self.highlightColor;
-    [self addSubview:_lineDaysBottom];
+    _lineMonthsBottom = [[UIView alloc] initWithFrame:CGRectMake(_scrollViewMonths.frame.origin.x + kHooDatePickerLineMargin, _scrollViewMonths.frame.origin.y + (_scrollViewMonths.frame.size.height / 2) + (kHooDatePickerScrollViewItemHeight / 2), width - (2 * kHooDatePickerLineMargin), kHooDatePickerLineWidth)];
+    _lineMonthsBottom.backgroundColor = self.highlightColor;
+    [self addSubview:_lineMonthsBottom];
     
     
     // Update ScrollView Data
