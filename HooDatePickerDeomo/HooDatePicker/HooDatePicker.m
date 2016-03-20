@@ -873,8 +873,8 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self dismiss];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(datePicker:clickedCancelButton:)]) {
-        [self.delegate datePicker:self clickedCancelButton:sender];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(datePicker:didCancel:)]) {
+        [self.delegate datePicker:self didCancel:sender];
     }
 }
 
@@ -882,8 +882,8 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self dismiss];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(datePicker:clickedSureButton:date:)]) {
-        [self.delegate datePicker:self clickedSureButton:sender date:[self getDate]];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(datePicker:didSelectedDate:)]) {
+        [self.delegate datePicker:self didSelectedDate:[self getDate]];
     }
 }
 

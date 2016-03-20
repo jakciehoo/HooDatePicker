@@ -20,8 +20,8 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 @protocol HooDatePickerDelegate<NSObject>
 @optional
 - (void)datePicker:(HooDatePicker *)datePicker dateDidChange:(NSDate *)date;
-- (void)datePicker:(HooDatePicker *)datePicker clickedCancelButton:(UIButton *)sender;
-- (void)datePicker:(HooDatePicker *)datePicker clickedSureButton:(UIButton *)sender date:(NSDate*)date;
+- (void)datePicker:(HooDatePicker *)datePicker didCancel:(UIButton *)sender;
+- (void)datePicker:(HooDatePicker *)dataPicker didSelectedDate:(NSDate *)date;
 @end
 
 @interface HooDatePicker : UIControl
@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
  */
 @property(nonatomic,readonly) BOOL        isOpen;
 
-@property (nonatomic, strong) NSObject<HooDatePickerDelegate> *delegate;
+@property (nonatomic, weak) id<HooDatePickerDelegate> delegate;
 
 - (instancetype)initWithSuperView:(UIView*)superView;
 

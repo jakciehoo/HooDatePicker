@@ -15,9 +15,9 @@
 		225C164A1C8ADF7A00040297 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 225C16481C8ADF7A00040297 /* LaunchScreen.storyboard */; };
 		225C16551C8ADF7A00040297 /* HooDatePickerDeomoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C16541C8ADF7A00040297 /* HooDatePickerDeomoTests.m */; };
 		225C16601C8ADF7A00040297 /* HooDatePickerDeomoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C165F1C8ADF7A00040297 /* HooDatePickerDeomoUITests.m */; };
-		225C16701C8ADFD900040297 /* HooDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C166F1C8ADFD900040297 /* HooDatePicker.m */; };
 		225C16721C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png in Resources */ = {isa = PBXBuildFile; fileRef = 225C16711C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png */; };
 		225C16741C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png in Resources */ = {isa = PBXBuildFile; fileRef = 225C16731C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png */; };
+		226DC5371C9EA384008EE2F7 /* HooDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 226DC5361C9EA384008EE2F7 /* HooDatePicker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,10 +54,10 @@
 		225C165B1C8ADF7A00040297 /* HooDatePickerDeomoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HooDatePickerDeomoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		225C165F1C8ADF7A00040297 /* HooDatePickerDeomoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HooDatePickerDeomoUITests.m; sourceTree = "<group>"; };
 		225C16611C8ADF7A00040297 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		225C166E1C8ADFD900040297 /* HooDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HooDatePicker.h; sourceTree = "<group>"; };
-		225C166F1C8ADFD900040297 /* HooDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HooDatePicker.m; sourceTree = "<group>"; };
 		225C16711C8B656400040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot Mar 6, 2016, 3.04.09 AM.png"; sourceTree = "<group>"; };
 		225C16731C8B656E00040297 /* Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot Mar 6, 2016, 3.04.30 AM.png"; sourceTree = "<group>"; };
+		226DC5351C9EA384008EE2F7 /* HooDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HooDatePicker.h; sourceTree = "<group>"; };
+		226DC5361C9EA384008EE2F7 /* HooDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HooDatePicker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +108,7 @@
 		225C16391C8ADF7A00040297 /* HooDatePickerDeomo */ = {
 			isa = PBXGroup;
 			children = (
-				225C166D1C8ADF9300040297 /* HooDatePicker */,
+				226DC5341C9EA384008EE2F7 /* HooDatePicker */,
 				225C163D1C8ADF7A00040297 /* AppDelegate.h */,
 				225C163E1C8ADF7A00040297 /* AppDelegate.m */,
 				225C16401C8ADF7A00040297 /* ViewController.h */,
@@ -150,11 +150,11 @@
 			path = HooDatePickerDeomoUITests;
 			sourceTree = "<group>";
 		};
-		225C166D1C8ADF9300040297 /* HooDatePicker */ = {
+		226DC5341C9EA384008EE2F7 /* HooDatePicker */ = {
 			isa = PBXGroup;
 			children = (
-				225C166E1C8ADFD900040297 /* HooDatePicker.h */,
-				225C166F1C8ADFD900040297 /* HooDatePicker.m */,
+				226DC5351C9EA384008EE2F7 /* HooDatePicker.h */,
+				226DC5361C9EA384008EE2F7 /* HooDatePicker.m */,
 			);
 			path = HooDatePicker;
 			sourceTree = "<group>";
@@ -291,7 +291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				225C16701C8ADFD900040297 /* HooDatePicker.m in Sources */,
+				226DC5371C9EA384008EE2F7 /* HooDatePicker.m in Sources */,
 				225C16421C8ADF7A00040297 /* ViewController.m in Sources */,
 				225C163F1C8ADF7A00040297 /* AppDelegate.m in Sources */,
 				225C163C1C8ADF7A00040297 /* main.m in Sources */,
@@ -518,6 +518,7 @@
 				225C16661C8ADF7A00040297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		225C16671C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoTests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +527,7 @@
 				225C16691C8ADF7A00040297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		225C166A1C8ADF7A00040297 /* Build configuration list for PBXNativeTarget "HooDatePickerDeomoUITests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +536,7 @@
 				225C166C1C8ADF7A00040297 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

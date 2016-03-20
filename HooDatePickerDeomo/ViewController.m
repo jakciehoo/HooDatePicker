@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "HooDatePicker.h"
+#import "HooDatePicker/HooDatePicker.h"
 
 @interface ViewController ()<HooDatePickerDelegate>
 @property (nonatomic, strong) HooDatePicker *datePicker;
@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.datePicker = [[HooDatePicker alloc] initWithSuperView:self.view];
     self.datePicker.delegate = self;
-    self.datePicker.datePickerMode = HooDatePickerModeYearAndMonth;
+    self.datePicker.datePickerMode = HooDatePickerModeDate;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
     NSDate *maxDate = [dateFormatter dateFromString:@"01-01-2050 00:00:00"];
@@ -79,13 +79,13 @@
     self.labelDateSelected.text = value;
 }
 
-- (void)datePicker:(HooDatePicker *)datePicker clickedCancelButton:(UIButton *)sender {
+- (void)datePicker:(HooDatePicker *)datePicker didCancel:(UIButton *)sender {
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"关闭日期选择" delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)datePicker:(HooDatePicker *)datePicker clickedSureButton:(UIButton *)sender date:(NSDate*)date {
+- (void)datePicker:(HooDatePicker *)datePicker didSelectedDate:(NSDate*)date {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[NSLocale currentLocale]];
