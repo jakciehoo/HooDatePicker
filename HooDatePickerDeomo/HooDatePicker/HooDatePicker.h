@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSDate+HooDatePicker.h"
 
 typedef NS_ENUM(NSInteger,HooDatePickerMode) {
     HooDatePickerModeTime,    // Displays hour, minute, and optionally AM/PM designation depending on the locale setting (e.g. 6 | 53 | PM)
@@ -44,7 +45,7 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 /**
  *  default is [NSLocale currentLocale]. setting nil returns to default
  */
-@property(nonatomic,retain) NSLocale      *locale;
+@property(nonatomic,strong) NSLocale      *locale;
 /**
  *  default is [NSCalendar currentCalendar]. setting nil returns to default
  */
@@ -52,7 +53,7 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 /**
  *   default is nil. use current time zone or time zone from calendar
  */
-@property(nonatomic,retain) NSTimeZone    *timeZone;
+@property(nonatomic,strong) NSTimeZone    *timeZone;
 /**
  *  read only property, indicate in datepicker is open.
  */
@@ -61,6 +62,10 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
 @property (nonatomic, weak) id<HooDatePickerDelegate> delegate;
 
 - (instancetype)initWithSuperView:(UIView*)superView;
+
+- (instancetype)initDatePickerMode:(HooDatePickerMode)datePickerMode andAddToSuperView:(UIView *)superView;
+
+- (instancetype)initDatePickerMode:(HooDatePickerMode)datePickerMode minDate:(NSDate *)minimumDate maxMamDate:(NSDate *)maximumDate  andAddToSuperView:(UIView *)superView;
 
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;
 

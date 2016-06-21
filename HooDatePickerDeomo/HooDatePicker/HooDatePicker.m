@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 // ScrollView for Years, Months, days ,Dates ,Hours ,Minute ,Seconds
 @property (nonatomic, strong) UIScrollView *scrollViewYears, *scrollViewMonths, *scrollViewDays, *scrollViewDates, *scrollViewHours, *scrollViewMinutes,*scrollViewSeconds;
 
-@property (nonatomic, strong) UIView *superView;
+@property (nonatomic, weak) UIView *superView;
 
 @property (nonatomic, copy) UIView *dimBackgroundView;
 
@@ -106,159 +106,55 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 
 @implementation HooDatePicker
 
-#pragma mark - Getters and Setters
-
-- (UIView *)dimBackgroundView {
-    if(!_dimBackgroundView) {
-        _dimBackgroundView = [[UIView alloc] initWithFrame:self.superView.bounds];
-        [_dimBackgroundView setTranslatesAutoresizingMaskIntoConstraints:YES];
-        _dimBackgroundView.backgroundColor = [UIColor clearColor];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
-        [_dimBackgroundView addGestureRecognizer:tap];
-    }
-    return _dimBackgroundView;
-}
-
-- (UIView *)headerView {
-    if (!_headerView) {
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, kHooDatePickerHeaderHeight)];
-        // Button Cancel
-        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
-        [cancelButton setTitle:kCancelButtonItemTitle forState:UIControlStateNormal];
-        [cancelButton setTitleColor:self.tintColor forState:UIControlStateNormal];
-        [cancelButton addTarget:self action:@selector(actionButtonCancel:) forControlEvents:UIControlEventTouchUpInside];
-        [_headerView addSubview:cancelButton];
-        
-        // Button confirm
-        UIButton *sureButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - kHooDatePickerButtonHeaderWidth - kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
-        [sureButton setTitle:kSureButtonItemTitle forState:UIControlStateNormal];
-        [sureButton setTitleColor:self.highlightColor forState:UIControlStateNormal];
-        [sureButton addTarget:self action:@selector(actionButtonValid:) forControlEvents:UIControlEventTouchUpInside];
-        [_headerView addSubview:sureButton];
-        
-        // Label Title
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancelButton.frame) + kHooDatePickerPadding, 0.0, self.frame.size.width - ((kHooDatePickerButtonHeaderWidth + kHooDatePickerPadding * 2) * 2 ), kHooDatePickerHeaderHeight)];
-        _titleLabel.text = self.title;
-        _titleLabel.font = kHooDatePickerTitleFont;
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.textColor = self.tintColor;
-        [_headerView addSubview:_titleLabel];
-    }
-    return _headerView;
-}
-
-- (NSDateFormatter *)dateFormatter {
-    if (!_dateFormatter) {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        _dateFormatter = dateFormatter;
-    }
-    return _dateFormatter;
-}
-
-- (NSMutableArray *)months {
-    NSMutableArray *months = [[NSMutableArray alloc] init];
-    for (int monthNumber = 1; monthNumber <= 12; monthNumber++) {
-        NSString *dateString = [NSString stringWithFormat: @"%d", monthNumber];
-        NSDateFormatter* dateFormatter = self.dateFormatter;
-        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
-        [dateFormatter setLocale:self.locale];
-        [dateFormatter setDateFormat:@"MM"];
-        NSDate* myDate = [dateFormatter dateFromString:dateString];
-        
-        NSDateFormatter *formatter = self.dateFormatter;
-        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
-        [dateFormatter setLocale:self.locale];
-        [formatter setDateFormat:@"MMM"];
-        NSString *stringFromDate = [formatter stringFromDate:myDate];
-        
-        [months addObject:stringFromDate];
-    }
-    _months = months;
-    return _months;
-}
-
-- (NSMutableArray*)hours {
-    if (!_hours) {
-        NSMutableArray *hours = [[NSMutableArray alloc] init];
-        
-        for (int i = 0; i < 24; i++) {
-            if (i < 10) {
-                [hours addObject:[NSString stringWithFormat:@"0%d", i]];
-            } else {
-                [hours addObject:[NSString stringWithFormat:@"%d", i]];
-            }
-        }
-        _hours = hours;
-    }
-    return _hours;
-}
-
-- (NSMutableArray*)minutes {
-    if (!_minutes) {
-        NSMutableArray *minutes = [[NSMutableArray alloc] init];
-        
-        for (int i = 0; i < 60; i++) {
-            if (i < 10) {
-                [minutes addObject:[NSString stringWithFormat:@"0%d", i]];
-            } else {
-                [minutes addObject:[NSString stringWithFormat:@"%d", i]];
-            }
-        }
-        _minutes = minutes;
-    }
-    return _minutes;
-}
-
-- (NSMutableArray*)seconds {
-    if (!_seconds) {
-        
-        NSMutableArray *seconds = [[NSMutableArray alloc] init];
-        
-        for (int i = 0; i < 60; i++) {
-            if (i < 10) {
-                [seconds addObject:[NSString stringWithFormat:@"0%d", i]];
-            } else {
-                [seconds addObject:[NSString stringWithFormat:@"%d", i]];
-            }
-        }
-        _seconds = seconds;
-    }
-    return _seconds;
-}
-
-- (void)setTintColor:(UIColor *)tintColor {
-    _tintColor = tintColor;
-    [self setupControl];
-}
-
-- (void)setHighlightColor:(UIColor *)highlightColor {
-    _highlightColor = highlightColor;
-    [self setupControl];
-}
-
-- (void)setMinimumDate:(NSDate*)date {
-    _minimumDate = date;
-    NSDateComponents* componentsMin = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:_minimumDate];
-    NSInteger yearMin = [componentsMin year];
-    _minYear = yearMin;
-    [self setupControl];
-}
-
-- (void)setMaximumDate:(NSDate*)date {
-    _maximumDate = date;
-    [self setupControl];
-}
 
 #pragma mark - Initializers
 
 - (instancetype)initWithSuperView:(UIView*)superView {
     
-    _superView = superView;
     
-    if ([self initWithFrame:CGRectMake(0.0, _superView.frame.size.height, _superView.frame.size.width, kHooDatePickerHeight)]) {
+    if (self = [super initWithFrame:CGRectMake(0.0, superView.frame.size.height, superView.frame.size.width, kHooDatePickerHeight)]) {
         _datePickerMode = HooDatePickerModeDate;
-        [_superView addSubview:self];
+        [superView addSubview:self];
+        _superView = superView;
         _minYear = 1900;
+        self.tintColor = kHooDatePickerTintColor;
+        self.highlightColor = kHooDatePickerHighlightColor;
+        [self addSubview:self.headerView];
+        [self setupControl];
+    }
+    return self;
+}
+
+- (instancetype)initDatePickerMode:(HooDatePickerMode)datePickerMode andAddToSuperView:(UIView *)superView {
+    if (self = [super initWithFrame:CGRectMake(0.0, superView.frame.size.height, superView.frame.size.width, kHooDatePickerHeight)]) {
+        _datePickerMode = datePickerMode;
+        [superView addSubview:self];
+        _superView = superView;
+        _minYear = 1900;
+        self.tintColor = kHooDatePickerTintColor;
+        self.highlightColor = kHooDatePickerHighlightColor;
+        [self addSubview:self.headerView];
+        [self setupControl];
+    }
+    return self;
+}
+
+- (instancetype)initDatePickerMode:(HooDatePickerMode)datePickerMode minDate:(NSDate *)minimumDate maxMamDate:(NSDate *)maximumDate  andAddToSuperView:(UIView *)superView {
+    if (self = [super initWithFrame:CGRectMake(0.0, superView.frame.size.height, superView.frame.size.width, kHooDatePickerHeight)]) {
+        _datePickerMode = datePickerMode;
+        [superView addSubview:self];
+        _superView = superView;
+        _minYear = 1900;
+        if (maximumDate) {
+            _maximumDate = maximumDate;
+        }
+        if (minimumDate) {
+            _minimumDate = minimumDate;
+            
+            NSDateComponents* componentsMin = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:_minimumDate];
+            NSInteger yearMin = [componentsMin year];
+            _minYear = yearMin;
+        }
         self.tintColor = kHooDatePickerTintColor;
         self.highlightColor = kHooDatePickerHighlightColor;
         [self addSubview:self.headerView];
@@ -280,15 +176,12 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     [self removeSelectorMinutes];
     [self removeSelectorSeconds];
     
-    // Default parameters :
-    self.calendar = [NSCalendar currentCalendar];
-    self.locale = [NSLocale currentLocale];
-    self.timeZone = nil;
-    
     // Generate collections days, months, years, hours, minutes and seconds :
     _years = [self getYears];
     _days = [self getDaysInMonth:[NSDate date]];
-    _dates = [self getDates];
+    if (self.datePickerMode == HooDatePickerModeDateAndTime) {
+        _dates = [self getDates];
+    }
     
     // Background :
     self.backgroundColor = kHooDatePickerBackgroundColor;
@@ -317,7 +210,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     if (self.datePickerMode == HooDatePickerModeYearAndMonth) {
         [self buildSelectorYearsOffsetX:0.0 andWidth:self.frame.size.width * 0.5];
         [self buildSelectorMonthsOffsetX:(_scrollViewYears.frame.size.width + kHooDatePickerScrollViewLeftMargin) andWidth:self.frame.size.width * 0.5];
-
+        
     }
     
     // Defaut Date selected :
@@ -601,7 +494,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     NSDateFormatter *dateFormatter = self.dateFormatter;
     [dateFormatter setCalendar:self.calendar];
     [dateFormatter setTimeZone:self.timeZone];
-    [dateFormatter setDateFormat:@"YY MMM dd EEE"];
+    [dateFormatter setDateFormat:[NSString stringWithFormat:@"MMMdd%@ EEE", @"日"]];
     
     for (int i = 0; i < _dates.count; i++) {
         
@@ -873,7 +766,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self dismiss];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(datePicker:didCancel:)]) {
+    if ([self.delegate respondsToSelector:@selector(datePicker:didCancel:)]) {
         [self.delegate datePicker:self didCancel:sender];
     }
 }
@@ -882,7 +775,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self dismiss];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(datePicker:didSelectedDate:)]) {
+    if ([self.delegate respondsToSelector:@selector(datePicker:didSelectedDate:)]) {
         [self.delegate datePicker:self didSelectedDate:[self getDate]];
     }
 }
@@ -892,7 +785,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 -(void)show {
     
     if (!_superView) return;
-        
+    
     if (self.hidden == YES) {
         self.hidden = NO;
     }
@@ -903,7 +796,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     }
     
     [self.superView insertSubview:self.dimBackgroundView belowSubview:self];
-
+    
     if (self.datePickerMode == HooDatePickerModeDate || self.datePickerMode == HooDatePickerModeDateAndTime) {
         
         int indexDays = [self getIndexForScrollViewPosition:_scrollViewDays];
@@ -928,11 +821,19 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [self highlightLabelInArray:_labelsSeconds atIndex:indexSeconds];
     }
     
+    if (self.datePickerMode == HooDatePickerModeYearAndMonth) {
+        int indexMonths = [self getIndexForScrollViewPosition:_scrollViewMonths];
+        [self highlightLabelInArray:_labelsMonths atIndex:indexMonths];
+        
+        int indexYears = [self getIndexForScrollViewPosition:_scrollViewYears];
+        [self highlightLabelInArray:_labelsYears atIndex:indexYears];
+    }
+    
     [UIView animateWithDuration:kHooDatePickerAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.frame = CGRectMake(self.frame.origin.x, _superView.frame.size.height - kHooDatePickerHeight, self.frame.size.width, self.frame.size.height);
+        self.frame = CGRectMake(self.frame.origin.x, _superView.frame.size.height - kHooDatePickerHeight, self.frame.size.width, self.frame.size.height);
     } completion:^(BOOL finished) {
         _isOpen = YES;
-
+        
     }];
 }
 
@@ -991,45 +892,55 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 }
 
 - (NSMutableArray*)getDates {
-    
     NSMutableArray *dates = [[NSMutableArray alloc] init];
     
-    NSDateComponents* currentComponents = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
-    NSInteger currentYear = [currentComponents year];
-    
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    [dateComponents setCalendar:self.calendar];
-    [dateComponents setTimeZone:self.timeZone];
-    [dateComponents setDay:1];
-    [dateComponents setMonth:1];
-    [dateComponents setHour:0];
-    [dateComponents setMinute:0];
-    [dateComponents setSecond:0];
-    [dateComponents setYear:currentYear];
-    
-    NSDateComponents *maxComponents = [[NSDateComponents alloc] init];
-    [maxComponents setCalendar:self.calendar];
-    [maxComponents setTimeZone:self.timeZone];
-    [maxComponents setDay:1];
-    [maxComponents setMonth:1];
-    [maxComponents setHour:0];
-    [maxComponents setMinute:0];
-    [maxComponents setSecond:0];
-    [maxComponents setYear:currentYear + 1];
-    
-    NSDate *yearMin = [dateComponents date];
-    NSDate *yearMax = [maxComponents date];
-    
-    NSInteger timestampMin = [yearMin timeIntervalSince1970];
-    NSInteger timestampMax = [yearMax timeIntervalSince1970];
-    
-    while (timestampMin < timestampMax) {
+    if (self.minimumDate && self.maximumDate) {
+        NSInteger days = [self.minimumDate daysBetween:self.maximumDate];
+        for (NSInteger i = 0; i < days; i++) {
+            NSDate *date = [self.minimumDate dateByAddingDays:i];
+            if ([date daysBetween: self.maximumDate] >= 0) {
+                [dates addObject:date];
+            }
+        }
+    } else {
         
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestampMin];
+        NSDateComponents* currentComponents = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
+        NSInteger currentYear = [currentComponents year];
         
-        [dates addObject:date];
+        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+        [dateComponents setCalendar:self.calendar];
+        [dateComponents setTimeZone:self.timeZone];
+        [dateComponents setDay:1];
+        [dateComponents setMonth:1];
+        [dateComponents setHour:0];
+        [dateComponents setMinute:0];
+        [dateComponents setSecond:0];
+        [dateComponents setYear:currentYear];
         
-        timestampMin += 1 * 24 * 60 * 60;
+        NSDateComponents *maxComponents = [[NSDateComponents alloc] init];
+        [maxComponents setCalendar:self.calendar];
+        [maxComponents setTimeZone:self.timeZone];
+        [maxComponents setDay:1];
+        [maxComponents setMonth:1];
+        [maxComponents setHour:0];
+        [maxComponents setMinute:0];
+        [maxComponents setSecond:0];
+        [maxComponents setYear:currentYear + 1];
+        
+        NSDate *yearMin = [dateComponents date];
+        NSDate *yearMax = [maxComponents date];
+        
+        NSInteger timestampMin = [yearMin timeIntervalSince1970];
+        NSInteger timestampMax = [yearMax timeIntervalSince1970];
+        
+        while (timestampMin < timestampMax) {
+            
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestampMin];
+            
+            [dates addObject:date];
+            
+            timestampMin += 1 * 24 * 60 * 60;
+        }
     }
     
     return dates;
@@ -1045,7 +956,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     for (int i = 1; i <= daysRange.length; i++) {
         
-        [days addObject:[NSString stringWithFormat:@"%d", i]];
+        [days addObject:[NSString stringWithFormat:@"%d%@", i, @"日"]];
     }
     
     return days;
@@ -1234,8 +1145,18 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self setScrollView:scrollView atIndex:index animated:YES];
     
+    NSDate *selectedDate = [self getDate];
+    if (self.datePickerMode != HooDatePickerModeDateAndTime && self.datePickerMode != HooDatePickerModeTime) {
+        if ([selectedDate compare:self.minimumDate] == NSOrderedAscending) {
+            [self setDate:self.minimumDate animated:YES];
+        }
+        
+        if ([selectedDate compare:self.maximumDate] == NSOrderedDescending) {
+            [self setDate:self.maximumDate animated:YES];
+        }
+    }
     if ([self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
-        [self.delegate datePicker:self dateDidChange:[self getDate]];
+        [self.delegate datePicker:self dateDidChange:selectedDate];
     }
 }
 
@@ -1247,8 +1168,21 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     
     [self setScrollView:scrollView atIndex:index animated:YES];
     
+    NSDate *selectedDate = [self getDate];
+    if (self.datePickerMode != HooDatePickerModeDateAndTime && self.datePickerMode != HooDatePickerModeTime) {
+        if ([selectedDate compare:self.minimumDate] == NSOrderedAscending) {
+            [self setDate:self.minimumDate animated:YES];
+            return;
+        }
+        
+        if ([selectedDate compare:self.maximumDate] == NSOrderedDescending) {
+            [self setDate:self.maximumDate animated:YES];
+            return;
+        }
+    }
+    
     if ([self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
-        [self.delegate datePicker:self dateDidChange:[self getDate]];
+        [self.delegate datePicker:self dateDidChange:selectedDate];
     }
 }
 
@@ -1277,7 +1211,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     } else if (scrollView.tag == ScrollViewTagValue_SECONDS) {
         _selectedSecond = index; // 0 to 59
     } else if (scrollView.tag == ScrollViewTagValue_DATES) {
-        _selectedDate = index + 1;
+        _selectedDate = index;
     }
 }
 
@@ -1287,7 +1221,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     NSDate *date = [self convertToDateDay:1 month:_selectedMonth year:_selectedYear hours:_selectedHour minutes:_selectedMinute seconds:_selectedSecond];
     
     if (!date) return;
-        
+    
     NSMutableArray *newDays = [self getDaysInMonth:date];
     
     if (newDays.count != _days.count) {
@@ -1316,7 +1250,7 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 - (void)setScrollView:(UIScrollView*)scrollView atIndex:(NSInteger)index animated:(BOOL)animated {
     
     if (!scrollView) return;
-        
+    
     if (animated) {
         [UIView beginAnimations:@"ScrollViewAnimation" context:nil];
         [UIView setAnimationDelegate:self];
@@ -1338,22 +1272,17 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
 - (void)highlightLabelInArray:(NSMutableArray*)labels atIndex:(NSInteger)index {
     if (!labels) return;
     if (index > labels.count) return;
-    if ((index - 1) >= 0) {
-        UILabel *label = (UILabel*)[labels objectAtIndex:(index - 1)];
-        label.textColor = self.tintColor;
-        label.font = kHooDatePickerLabelFont;
-    }
+    if (index < 0) return;
     
-    if (index >= 0 && index < labels.count) {
-        UILabel *label = (UILabel*)[labels objectAtIndex:index];
-        label.textColor = self.highlightColor;
-        label.font = kHooDatePickerLabelSelectedFont;
-    }
-    
-    if ((index + 1) < labels.count) {
-        UILabel *label = (UILabel*)[labels objectAtIndex:(index + 1)];
-        label.textColor = self.tintColor;
-        label.font = kHooDatePickerLabelFont;
+    for (int i = 0; i < labels.count; i++) {
+        UILabel *label = (UILabel *)[labels objectAtIndex:i];
+        if (i != index) {
+            label.textColor = self.tintColor;
+            label.font = kHooDatePickerLabelFont;
+        } else {
+            label.textColor = self.highlightColor;
+            label.font = kHooDatePickerLabelSelectedFont;
+        }
     }
 }
 
@@ -1368,13 +1297,29 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     _selectedMonth = [components month];
     _selectedYear = [components year];
     _selectedHour = [components hour];
-    _selectedMinute = [components minute];
+    /**
+     *  only show mininute 00 10 20 ~ 50 in hotel tour edit order for flight pick up
+     */
+    if (self.datePickerMode != HooDatePickerModeDateAndTime) {
+        _selectedMinute = [components minute];
+    }
     _selectedSecond = [components second];
     
-    if (self.datePickerMode == HooDatePickerModeDate || self.datePickerMode == HooDatePickerModeDateAndTime) {
-        [self setScrollView:_scrollViewDays atIndex:(_selectedDay - 1) animated:animated];
-        [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
+    if (self.datePickerMode == HooDatePickerModeDateAndTime) {
+        if (self.minimumDate) {
+            [self  setScrollView:_scrollViewDates atIndex:[date daysBetween:self.minimumDate] - 1 animated:animated];
+        } else {
+            [self setScrollView:_scrollViewDates atIndex:(_selectedDay - 1) animated:animated];
+        }
+        
+    }
+    
+    if (self.datePickerMode == HooDatePickerModeDate) {
         [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
+        [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
+        [self setScrollView:_scrollViewDays atIndex:(_selectedDay - 1) animated:animated];
+        
+        
     }
     
     if (self.datePickerMode == HooDatePickerModeTime || self.datePickerMode == HooDatePickerModeDateAndTime) {
@@ -1515,9 +1460,213 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
     return [dateFormatter dateFromString:dateString];
 }
 
-- (NSDate*)getDate {
+- (NSDate*)convertToDate:(NSInteger)days hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds {
     
+    NSDate *date = [self.minimumDate dateByAddingDays:days];
+    
+    NSMutableString *dateString = [[NSMutableString alloc] initWithString:[date stringForFormat:@"dd-MM-yyyy"]];
+    
+    NSDateFormatter *dateFormatter = self.dateFormatter;
+    if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
+    [dateFormatter setLocale:self.locale];
+    
+    
+    if (hours < 10) {
+        [dateString appendFormat:@" 0%ld:", (long)hours];
+    } else {
+        [dateString appendFormat:@" %ld:", (long)hours];
+    }
+    /**
+     *  only show mininute 00 10 20 ~ 50 in hotel tour edit order for flight pick up
+     */
+    
+    if (!minutes) {
+        [dateString appendFormat:@"0%ld:", (long)minutes];
+    } else {
+        [dateString appendFormat:@"%ld:", (long)minutes * 10];
+    }
+    
+    [dateString appendString:@"00"];
+    
+    [dateFormatter setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
+    return [dateFormatter dateFromString:dateString];
+}
+
+- (NSDate*)getDate {
+    if (self.datePickerMode == HooDatePickerModeDateAndTime) {
+        return [self convertToDate:_selectedDate hours:_selectedHour minutes:_selectedMinute seconds:_selectedSecond];
+    }
     return [self convertToDateDay:_selectedDay month:_selectedMonth year:_selectedYear hours:_selectedHour minutes:_selectedMinute seconds:_selectedSecond];
 }
+
+#pragma mark - Getters and Setters
+
+- (UIView *)dimBackgroundView {
+    if(!_dimBackgroundView) {
+        _dimBackgroundView = [[UIView alloc] initWithFrame:self.superView.bounds];
+        [_dimBackgroundView setTranslatesAutoresizingMaskIntoConstraints:YES];
+        _dimBackgroundView.backgroundColor = [UIColor clearColor];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+        [_dimBackgroundView addGestureRecognizer:tap];
+    }
+    return _dimBackgroundView;
+}
+
+- (UIView *)headerView {
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, kHooDatePickerHeaderHeight)];
+        // Button Cancel
+        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
+        [cancelButton setTitle:kCancelButtonItemTitle forState:UIControlStateNormal];
+        [cancelButton setTitleColor:self.tintColor forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(actionButtonCancel:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView addSubview:cancelButton];
+        
+        // Button confirm
+        UIButton *sureButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - kHooDatePickerButtonHeaderWidth - kHooDatePickerPadding, 0.0, kHooDatePickerButtonHeaderWidth, kHooDatePickerHeaderHeight)];
+        [sureButton setTitle:kSureButtonItemTitle forState:UIControlStateNormal];
+        [sureButton setTitleColor:self.highlightColor forState:UIControlStateNormal];
+        [sureButton addTarget:self action:@selector(actionButtonValid:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView addSubview:sureButton];
+        
+        // Label Title
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancelButton.frame) + kHooDatePickerPadding, 0.0, self.frame.size.width - ((kHooDatePickerButtonHeaderWidth + kHooDatePickerPadding * 2) * 2 ), kHooDatePickerHeaderHeight)];
+        _titleLabel.text = self.title;
+        _titleLabel.font = kHooDatePickerTitleFont;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.textColor = self.tintColor;
+        [_headerView addSubview:_titleLabel];
+    }
+    return _headerView;
+}
+
+- (NSDateFormatter *)dateFormatter {
+    if (!_dateFormatter) {
+        NSDateFormatter *dateFormatter = [NSDate shareDateFormatter];
+        _dateFormatter = dateFormatter;
+    }
+    _dateFormatter.dateFormat = kDateFormatYYYYMMDD;
+    return _dateFormatter;
+}
+
+- (NSCalendar *)calendar {
+    if (!_calendar) {
+        _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        _calendar.timeZone = self.timeZone;
+        _calendar.locale = self.locale;
+    }
+    return _calendar;
+}
+
+- (NSMutableArray *)months {
+    NSMutableArray *months = [[NSMutableArray alloc] init];
+    for (int monthNumber = 1; monthNumber <= 12; monthNumber++) {
+        NSString *dateString = [NSString stringWithFormat: @"%d", monthNumber];
+        NSDateFormatter* dateFormatter = self.dateFormatter;
+        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
+        [dateFormatter setLocale:self.locale];
+        [dateFormatter setDateFormat:@"MM"];
+        NSDate* myDate = [dateFormatter dateFromString:dateString];
+        
+        NSDateFormatter *formatter = self.dateFormatter;
+        if (self.timeZone) [dateFormatter setTimeZone:self.timeZone];
+        [dateFormatter setLocale:self.locale];
+        [formatter setDateFormat:@"MMM"];
+        NSString *stringFromDate = [formatter stringFromDate:myDate];
+        
+        [months addObject:stringFromDate];
+    }
+    _months = months;
+    return _months;
+}
+
+- (NSMutableArray*)hours {
+    if (!_hours) {
+        NSMutableArray *hours = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < 24; i++) {
+            if (i < 10) {
+                [hours addObject:[NSString stringWithFormat:@"0%d%@", i, @"时"]];
+            } else {
+                [hours addObject:[NSString stringWithFormat:@"%d%@", i, @"时"]];
+            }
+        }
+        _hours = hours;
+    }
+    return _hours;
+}
+
+- (NSMutableArray*)minutes {
+    if (!_minutes) {
+        NSMutableArray *minutes = [[NSMutableArray alloc] init];
+        /**
+         *  only show mininute 00 10 20 ~ 50 in hotel tour edit order for flight pick up
+         */
+        for (int i = 0; i < 6; i++) {
+            if (!i) {
+                [minutes addObject:[NSString stringWithFormat:@"%d0%@", i, @"分"]];
+            } else {
+                [minutes addObject:[NSString stringWithFormat:@"%d%@", i * 10, @"分"]];
+            }
+            
+        }
+        _minutes = minutes;
+    }
+    return _minutes;
+}
+
+- (NSMutableArray*)seconds {
+    if (!_seconds) {
+        
+        NSMutableArray *seconds = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
+                [seconds addObject:[NSString stringWithFormat:@"0%d", i]];
+            } else {
+                [seconds addObject:[NSString stringWithFormat:@"%d", i]];
+            }
+        }
+        _seconds = seconds;
+    }
+    return _seconds;
+}
+- (NSTimeZone *)timeZone {
+    if (!_timeZone) {
+        _timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    }
+    return _timeZone;
+}
+
+- (NSLocale *)locale {
+    if (!_locale) {
+        _locale = [NSLocale currentLocale];
+    }
+    return _locale;
+}
+
+- (void)setTintColor:(UIColor *)tintColor {
+    _tintColor = tintColor;
+    [self setupControl];
+}
+
+- (void)setHighlightColor:(UIColor *)highlightColor {
+    _highlightColor = highlightColor;
+    [self setupControl];
+}
+
+- (void)setMinimumDate:(NSDate*)date {
+    _minimumDate = date;
+    NSDateComponents* componentsMin = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:_minimumDate];
+    NSInteger yearMin = [componentsMin year];
+    _minYear = yearMin;
+    [self setupControl];
+}
+
+- (void)setMaximumDate:(NSDate*)date {
+    _maximumDate = date;
+    [self setupControl];
+}
+
 
 @end

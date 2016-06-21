@@ -22,10 +22,10 @@
     self.datePicker = [[HooDatePicker alloc] initWithSuperView:self.view];
     self.datePicker.delegate = self;
     self.datePicker.datePickerMode = HooDatePickerModeDate;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
-    NSDate *maxDate = [dateFormatter dateFromString:@"01-01-2050 00:00:00"];
-    NSDate *minDate = [dateFormatter dateFromString:@"01-01-2016 00:00:00"];
+    NSDateFormatter *dateFormatter = [NSDate shareDateFormatter];
+    [dateFormatter setDateFormat:kDateFormatYYYYMMDD];
+    NSDate *maxDate = [dateFormatter dateFromString:@"2050-01-01"];
+    NSDate *minDate = [dateFormatter dateFromString:@"2016-01-01"];
 
     [self.datePicker setDate:[NSDate date] animated:YES];
     self.datePicker.minimumDate = minDate;
