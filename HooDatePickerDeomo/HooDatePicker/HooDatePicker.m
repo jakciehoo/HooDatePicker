@@ -212,6 +212,12 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [self buildSelectorMonthsOffsetX:(_scrollViewYears.frame.size.width + kHooDatePickerScrollViewLeftMargin) andWidth:self.frame.size.width * 0.5];
         
     }
+    /// 只显示年份
+    if (self.datePickerMode == HooDatePickerModeYear) {
+        [self buildSelectorYearsOffsetX:0.0 andWidth:self.frame.size.width];
+        
+    }
+    
     
     // Defaut Date selected :
     [self setDate:[NSDate date] animated:NO];
@@ -828,6 +834,11 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         int indexYears = [self getIndexForScrollViewPosition:_scrollViewYears];
         [self highlightLabelInArray:_labelsYears atIndex:indexYears];
     }
+    /// 只显示年份
+    if (self.datePickerMode == HooDatePickerModeYear) {
+        int indexYears = [self getIndexForScrollViewPosition:_scrollViewYears];
+        [self highlightLabelInArray:_labelsYears atIndex:indexYears];
+    }
     
     [UIView animateWithDuration:kHooDatePickerAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.frame = CGRectMake(self.frame.origin.x, _superView.frame.size.height - kHooDatePickerHeight, self.frame.size.width, self.frame.size.height);
@@ -1332,7 +1343,10 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         [self setScrollView:_scrollViewMonths atIndex:(_selectedMonth - 1) animated:animated];
         [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
     }
-    
+    /// 只显示年份
+    if (self.datePickerMode == HooDatePickerModeYear) {
+        [self setScrollView:_scrollViewYears atIndex:(_selectedYear - _minYear) animated:animated];
+    }
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(datePicker:dateDidChange:)]) {
         [self.delegate datePicker:self dateDidChange:[self getDate]];
     }
@@ -1456,8 +1470,13 @@ typedef NS_ENUM(NSInteger,ScrollViewTagValue) {
         
         [dateFormatter setDateFormat:@"MM-yyyy"];
     }
-    
-    return [dateFormatter dateFromString:dateString];
+    /// 只显示年份
+    if (self.datePickerMode == HooDatePickerModeYear) {
+        
+        [dateString appendFormat:@"%ld", (long)year];
+        
+        [dateFormatter setDateFormat:@"yyyy"];
+    }    return [dateFormatter dateFromString:dateString];
 }
 
 - (NSDate*)convertToDate:(NSInteger)days hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds {

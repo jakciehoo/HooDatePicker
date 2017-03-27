@@ -13,7 +13,8 @@ typedef NS_ENUM(NSInteger,HooDatePickerMode) {
     HooDatePickerModeTime,    // Displays hour, minute, and optionally AM/PM designation depending on the locale setting (e.g. 6 | 53 | PM)
     HooDatePickerModeDate,     // Displays month, day, and year depending on the locale setting (e.g. November | 15 | 2007)
     HooDatePickerModeDateAndTime, // Displays date, hour, minute, and optionally AM/PM designation depending on the locale setting (e.g. Wed Nov 15 | 6 | 53 | PM)
-    HooDatePickerModeYearAndMonth // Displays Year, Month,  designation depending on the locale setting (e.g. November | 2007)
+    HooDatePickerModeYearAndMonth, // Displays Year, Month,  designation depending on the locale setting (e.g. November | 2007)
+    HooDatePickerModeYear // Displays Year,designation depending on the locale setting (e.g.  2007)
 };
 
 @class HooDatePicker;
